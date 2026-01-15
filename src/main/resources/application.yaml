@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: java-aws-example
+    s3:
+      bucket-name: my-app-bucket
