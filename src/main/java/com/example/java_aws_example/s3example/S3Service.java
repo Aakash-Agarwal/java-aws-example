@@ -3,12 +3,15 @@ package com.example.java_aws_example.s3example;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.File;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +30,13 @@ public class S3Service {
         s3Client.putObject(putObjectRequest, RequestBody.fromFile(file));
     }
 
-    public void getFile(String key, File destinationFile) {
+    public String getFile(String key) throws IOException {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
 
-        s3Client.getObject(getObjectRequest, destinationFile.toPath());
+        ResponseInputStream<GetObjectResponse> ris = s3Client.getObject(getObjectRequest);
+        return new String(ris.readAllBytes());
     }
 }

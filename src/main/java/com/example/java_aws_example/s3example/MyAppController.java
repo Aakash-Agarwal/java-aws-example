@@ -31,11 +31,8 @@ public class MyAppController {
 
     @GetMapping
     public ResponseEntity<String> getFile() throws IOException {
-        File employeesFile = new File("employees.json");
-        s3Service.getFile("employees/employees.json", employeesFile);
-
-        byte[] data = Files.readAllBytes(employeesFile.toPath());
-        return ResponseEntity.ok(new String(data));
+        String data = s3Service.getFile("employees/employees.json");
+        return ResponseEntity.ok(data);
     }
 
 }
