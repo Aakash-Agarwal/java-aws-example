@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/java-aws-example/s3")
@@ -27,6 +28,12 @@ public class MyAppController {
         s3Service.putFile("employees/employees.json", file);
 
         return ResponseEntity.ok("File uploaded successfully");
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<String>> getFileList() throws IOException {
+        List<String> data = s3Service.listObjects("employees");
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping
